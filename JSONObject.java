@@ -240,16 +240,33 @@ public class JSONObject {
      * @param map
      *            A map object that can be used to initialize the contents of
      *            the JSONObject. The keys of the map are usually strings;
-	 *            if not, then the keys toString() implementation will be
+     *            if not, then the keys toString() implementation will be
      *            used to derive a proper JSON key.
      * @throws JSONException
      */
     public JSONObject(Map<?,?> map) {
+       this(map, true);
+    }
+
+    /**
+     * Construct a JSONObject from a Map.
+     *
+     * @param map
+     *            A map object that can be used to initialize the contents of
+     *            the JSONObject. The keys of the map are usually strings;
+     *            if not, then the keys toString() implementation will be
+     *            used to derive a proper JSON key.
+     * @param includeNullValues
+     *            If set to false, any entries in the map that have null values
+     *            will not have corresponding keys created in the JSONObject.
+     * @throws JSONException
+     */
+    public JSONObject(Map<?,?> map, boolean includeNullValues) {
         this.map = new HashMap<String, Object>();
         if (map != null) {
-			for (Entry<?,?> entry : map.entrySet()) {
+            for (Entry<?,?> entry : map.entrySet()) {
                 Object value = entry.getValue();
-                if (value != null) {
+                if (value != null || includeNullValues) {
                     this.map.put(entry.getKey().toString(), wrap(value));
                 }
             }
@@ -1015,9 +1032,9 @@ public class JSONObject {
                                     + key.substring(1);
                         }
 
-                        Object result = method.invoke(bean, (Object[]) null);
-                        if (result != null) {
-                            this.map.put(key, wrap(result));
+                        if (!method.getReturnType().equals(Void.TYPE)) {
+                           Object result = method.invoke(bean, (Object[]) null);
+                           this.map.put(key, wrap(result));
                         }
                     }
                 }
