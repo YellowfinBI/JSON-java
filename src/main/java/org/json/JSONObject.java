@@ -2554,7 +2554,7 @@ public class JSONObject {
                     || object instanceof Long || object instanceof Boolean
                     || object instanceof Float || object instanceof Double
                     || object instanceof String || object instanceof BigInteger
-                    || object instanceof BigDecimal || object instanceof Enum) {
+                    || object instanceof BigDecimal) {
                 return object;
             }
 
@@ -2628,8 +2628,6 @@ public class JSONObject {
             }
         } else if (value instanceof Boolean) {
             writer.write(value.toString());
-        } else if (value instanceof Enum<?>) {
-            writer.write(quote(((Enum<?>)value).name()));
         } else if (value instanceof JSONObject) {
             ((JSONObject) value).write(writer, indentFactor, indent);
         } else if (value instanceof JSONArray) {

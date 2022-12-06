@@ -343,9 +343,6 @@ public class JSONWriter {
         if (value.getClass().isArray()) {
             return new JSONArray(value).toString();
         }
-        if(value instanceof Enum<?>){
-            return JSONObject.quote(((Enum<?>)value).name());
-        }
         return JSONObject.quote(value.toString());
     }
 
