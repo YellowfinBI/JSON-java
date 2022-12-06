@@ -11,6 +11,30 @@ JSON in Java [package org.json]
 **[Click here if you just want the latest release jar file.](https://search.maven.org/remotecontent?filepath=org/json/json/20220924/json-20220924.jar)**
 
 
+# Yellowfin BI fork
+
+This fork of JSON-java includes a couple of changes that we rely on.
+
+## Include `null` values when serializing objects
+
+By default JSON-java will not serialize `null` properties on objects, instead omitting those properties from the resulting map.
+
+This fork adds an `includeNullValues` flag to the `JSONObject(Object)` and `JSONObject(Map)` constructors. When set to `true`, any
+properties returning a null value will be included in the resulting JSONObject.
+
+Note that this only applies at the top level object and will not affect other objects referenced in the properties or descendants.
+
+## Revert Enum handling to the original pre-2016 implementation
+
+Enum handling in JSON-java was changed in 2016 to be more consistent and to serialize Enums to their `name()` value.
+
+Originally, under some circumstances (e.g. Enum property on an Object) the Enum would have been wrapped in a JSONObject, serializing all of
+its fields. After the change, the default behavior is to serialize the Enum to a String containing its `name()` value. It is still possible
+to serialize an Enum to a JSONObject by explicitly wrapping it in a JSONObject.
+
+This fork reverts the Enum handling changes to how they were handled before 2016 to ensure backwards compatability while retaining all of
+the other updates done to the library.
+
 # Overview
 
 [JSON](http://www.JSON.org/) is a light-weight language-independent data interchange format.
