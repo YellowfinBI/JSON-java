@@ -8,13 +8,13 @@ public class MyEnumClass {
     private MyEnumField myEnumField;
 
     public MyEnum getMyEnum() {
-        return this.myEnum;
+        return myEnum;
     }
     public void setMyEnum(MyEnum myEnum) {
         this.myEnum = myEnum;
     }
     public MyEnumField getMyEnumField() {
-        return this.myEnumField;
+        return myEnumField;
     }
     public void setMyEnumField(MyEnumField myEnumField) {
         this.myEnumField = myEnumField;
