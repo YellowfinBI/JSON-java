@@ -40,6 +40,9 @@ import java.util.Map.Entry;
 import java.util.ResourceBundle;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * A JSONObject is an unordered collection of name/value pairs. Its external
  * form is a string wrapped in curly braces with colons between the names and
@@ -148,6 +151,8 @@ public class JSONObject {
      */
     public static final Object NULL = new Null();
 
+    private static final Logger logger = LoggerFactory.getLogger(JSONObject.class);
+
     /**
      * Construct an empty JSONObject.
      */
@@ -175,6 +180,7 @@ public class JSONObject {
             try {
                 this.putOnce(names[i], jo.opt(names[i]));
             } catch (Exception ignore) {
+                logSerializationException(ignore);
             }
         }
     }
@@ -349,6 +355,7 @@ public class JSONObject {
             try {
                 this.putOpt(name, c.getField(name).get(object));
             } catch (Exception ignore) {
+                logSerializationException(ignore);
             }
         }
     }
@@ -787,6 +794,10 @@ public class JSONObject {
         return this.map.size();
     }
 
+    private void logSerializationException(Exception e) {
+        logger.error("Failed to serialize a JSONObject: " + e, e);
+    }
+
     /**
      * Produce a JSONArray containing the names of the elements of this
      * JSONObject.
@@ -1069,6 +1080,7 @@ public class JSONObject {
                     }
                 }
             } catch (Exception ignore) {
+                logSerializationException(ignore);
             }
         }
     }
