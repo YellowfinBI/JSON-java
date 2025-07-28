@@ -795,7 +795,10 @@ public class JSONObject {
     }
 
     private void logSerializationException(Exception e) {
-        logger.error("Failed to serialize a JSONObject: " + e, e);
+        String enabled = System.getProperty("json.java.log.serialization.exceptions");
+        if (enabled != null && Boolean.parseBoolean(enabled)) {
+            logger.error("Failed to serialize a JSONObject: " + e, e);
+        }
     }
 
     /**
